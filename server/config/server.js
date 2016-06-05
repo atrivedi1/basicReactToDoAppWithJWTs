@@ -7,12 +7,17 @@ var bodyParser = require('body-parser');
 //connect to db
 mongoose.connect('mongodb://localhost/todoApp');
 
+
 //create instance of express server
 var app = express();
 
 //middleware
-app.use(express.static(path.join(__dirname, '../..client/')));
-app.user(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../../')));
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+app.use(bodyParser.json());
+
 
 //listen on routes
 require('./routes.js')(app);

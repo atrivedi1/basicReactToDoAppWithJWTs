@@ -4,14 +4,20 @@ module.exports = {
 
   //C(reate)
   add: function(req, res){
+    console.log("trying to ADD ONE task:", req.body)
+   
     var newTask = new Task({
       id: req.body.id,
+      completed: req.body.completed,
       description: req.body.description
     });
 
     newTask.save(function(err, data){
-      if(!err){return console.error(err);}
-      else{console.log("new db entry created: " + newTask);}
+      if(err){return console.error(err);}
+      else{
+        console.log("post saved");
+        res.send(data);
+      }
     })
   },
     
@@ -19,7 +25,10 @@ module.exports = {
   getAll: function(req, res){
     Task.find({}, function(err, tasks){
       if(err){return console.error(err);}
-      else{res.send(tasks);}
+      else{
+        console.log("successfully sending data");
+        res.send(tasks);
+      }
     })
 
   },
@@ -27,13 +36,13 @@ module.exports = {
    
     //U(pdate)
   updateAll: function(req, res){
-
-    var tasksToUpdate = req.body.tasksToUpdate;
+    console.log("trying to UDPATE all tasks -->", req.body.tasks);
+    var tasksToUpdate = req.body.tasks;
     
-    tasksToUpdate.forEach(fucntion(task){
+    tasksToUpdate.forEach(function(task){
       Task.update({id: task.id}, {$set: {description: task.description}},function(err, data){
         if(err){return console.error(err);}
-        else{console.log("successfully updated task" + task)}
+        else{console.log("successfully updated ALL tasks" + task)}
       });
     });
 
@@ -41,16 +50,23 @@ module.exports = {
 
     //D(elete)
   delete: function(req, res){
-    // Task.remove({id: req.body.id}, function(err){
-    //   if(err){return console.error(err);}
-    //   else{console.log("sucessfully deleted task")}
-    // });
+    console.log("trying to DELETE ONE tasks");
+    var task = req.body;
+    Task.update({id: task.id}, {$set: {completed: true}},function(err, data){
+      if(err){return console.error(err);}
+      else{console.log("successfully marked task as complete:" + task)}
+    });
   },
 
   deleteAll: function(req,res){
-    // Task.remove({}, function(err){
-    //   if(err){return console.error(err);}
-    //   else{console.log("successfully deleted all tasks")}
-    // })
+    console.log("trying to DELETE ALL tasks:", req.body.tasks);
+    var tasksToUpdate = req.body.tasks;
+  
+    tasksToUpdate.forEach(function(task){
+      Task.update({id: task.id}, {$set: {completed: true}},function(err, data){
+        if(err){return console.error(err);}
+        else{console.log("successfully marked ALL tasks as complete" + task)}
+      });
+    });
   }
 }

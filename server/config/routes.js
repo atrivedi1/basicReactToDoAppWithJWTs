@@ -4,6 +4,7 @@ var task = require('../controllers/taskController.js');
 module.exports = function(app) {
 
   //C(reate)
+  /*Note: normally would handle this case via the update route, however included it for the purposes of this exercise*/
   app.post('/api/task', task.add);
 
   //R(etrieve)

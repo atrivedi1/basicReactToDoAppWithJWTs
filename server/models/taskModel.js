@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 var taskSchema = new mongoose.Schema ({
-	deleted: Boolean,
 	id: Number,
+	completed: Boolean,
 	description: String
 });
 
-module.exports = mongoose.model('tasks', userSchema);
+module.exports = mongoose.model('tasks', taskSchema);
