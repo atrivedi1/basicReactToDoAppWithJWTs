@@ -15,6 +15,7 @@ var Task = React.createClass({
       <div>
         <button 
            id="completeTask"
+           type = "button"
            value={this.props.task}
            onClick={function() {this.completedTaskEmitter(this.props.task.id)}.bind(this)}
         >

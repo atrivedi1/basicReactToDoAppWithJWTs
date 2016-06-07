@@ -37,6 +37,14 @@ var Todo = React.createClass({
     });   
   },
 
+  cloneObject: function(obj){
+    var result = {}
+    for(var key in obj){
+      result[key] = obj[key];
+    }
+    return result;
+  },
+
   authenticationSwitch: function(){
     
     var isNowAuthenticated = !this.state.authenticated;
@@ -69,7 +77,6 @@ var Todo = React.createClass({
   },
 
   addTask: function(e){
-    
     var taskDescription = this.refs.taskInput.value;
     var taskObj = {
       completed: false,
@@ -125,17 +132,16 @@ var Todo = React.createClass({
   completeTask: function(id){
       
       //mark task as complete
-      var updatedTasks = this.state.taskList.slice();
-      console.log(updatedTasks === this.state.taskList)
-      var taskToBeUpdated = updatedTasks[id];
-      taskToBeUpdated.completed = true; 
-      console.log('after clicking completed-->',this.state.taskList);    
+      console.log('state after clicking complete ONE -->', this.state.taskList);
+      var taskToBeUpdated = this.state.taskList[id];
+      var copyOfTargetTask = this.cloneObject(taskToBeUpdated);
+      copyOfTargetTask.completed = true;   
 
       //make a request to update task in database; if user is not authorized, will respond with an error
       $.ajax({
         url: this.state.singleTaskUrl,
         type: 'DELETE',
-        data: taskToBeUpdated,
+        data: copyOfTargetTask,
         headers: {'authorization': this.state.authenticationCode},
         success: function(data) {
           this.setState({taskList: data});
@@ -151,17 +157,19 @@ var Todo = React.createClass({
   completeAllTasks: function(){
 
     //create a copy of taskList and mark all tasks as completed
-    var allTasksMarkedAsComplete = this.state.taskList.slice();
-    allTasksMarkedAsComplete.forEach(function(task){
-      task.completed = true;
-    });
+    console.log('state after clicking complete ALL -->', this.state.taskList);
+    var completedCopyOfTaskList = this.state.taskList.map(function(task){
+      var taskClone = this.cloneObject(task);
+      taskClone.completed = false;
+      return taskClone;
+    }.bind(this));
 
 
     //make a request to mark all tasks as completed in database; if user is not authenticated will return error;
     $.ajax({
         url: this.state.allTasksUrl,
         type: 'DELETE',
-        data: {tasks: allTasksMarkedAsComplete},
+        data: {tasks: completedCopyOfTaskList},
         headers: {'authorization': this.state.authenticationCode},
         success: function(data) {
           this.setState({taskList: data});
@@ -184,7 +192,6 @@ var Todo = React.createClass({
 
   render: function(){
     
-    console.log(this.state);
     var authenticated = this.state.authenticated;
     var tasksExist = this.state.taskList.length;
 
@@ -214,6 +221,7 @@ var Todo = React.createClass({
           />
           <button 
              id="addTask"
+             type="button"
              onClick={this.addTask}
           >
             Add Task
@@ -229,12 +237,14 @@ var Todo = React.createClass({
         <div>
           <button 
              id="updateTasks"
+             type="button"
              onClick={this.updateTasks}
           >
             Update
           </button>
           <button 
              id="completeTasks"
+             type="button"
              onClick={this.completeAllTasks}
           >
             New Day

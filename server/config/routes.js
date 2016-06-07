@@ -9,7 +9,7 @@ var isAuthenticated = function(req, res, next) {
 	}
     else {
     	console.log("not authenticated");
-    	res.status(404).send('need to authenticate before you can delete');
+    	return res.status(404).send('need to authenticate before you can delete');
     }
 };
 
