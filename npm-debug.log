@@ -9,9 +9,10 @@
 4 verbose stack     at checkBinReferences_ (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:309:45)
 4 verbose stack     at final (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:343:3)
 4 verbose stack     at then (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:113:5)
-4 verbose stack     at ReadFileContext.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:297:29)
-4 verbose stack     at ReadFileContext.callback (/usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:76:16)
-4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:324:13)
+4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/read-package-json/read-json.js:300:12
+4 verbose stack     at /usr/local/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:76:16
+4 verbose stack     at tryToString (fs.js:414:3)
+4 verbose stack     at FSReqWrap.readFileAfterClose [as oncomplete] (fs.js:401:12)
 5 verbose cwd /Users/akashtrivedi/Documents/Personal/Job Search/coding challenges/Microsoft_CodingChallenge_053116_AT/CRUD_Application
 6 error Darwin 14.5.0
 7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
