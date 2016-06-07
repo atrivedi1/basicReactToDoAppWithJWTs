@@ -32,6 +32,6 @@
   },
 
   "scripts": {
-    "start": "node ./server/config/server.js",
+    "start": "node ./server/config/server.js"
   }
 }
