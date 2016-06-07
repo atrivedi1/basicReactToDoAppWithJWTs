@@ -61,7 +61,6 @@ module.exports = {
   deleteAll: function(req,res){
     console.log("trying to DELETE ALL tasks:", req.body.tasks);
     var tasksToUpdate = req.body.tasks;
-  
     tasksToUpdate.forEach(function(task){
       Task.update({id: task.id}, {$set: {completed: true}},function(err, data){
         if(err){return console.error(err);}

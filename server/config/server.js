@@ -3,6 +3,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 var path = require('path');
 var bodyParser = require('body-parser');
+var expressJWT = require('express-jwt');
+var jwt = require('jsonwebtoken');
 
 //connect to db
 mongoose.connect('mongodb://localhost/todoApp');
@@ -17,7 +19,6 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(bodyParser.json());
-
 
 //listen on routes
 require('./routes.js')(app);
