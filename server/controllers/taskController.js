@@ -50,11 +50,14 @@ module.exports = {
 
     //D(elete)
   delete: function(req, res){
-    console.log("trying to DELETE ONE tasks");
+    console.log("trying to DELETE ONE task");
     var task = req.body;
     Task.update({id: task.id}, {$set: {completed: true}},function(err, data){
       if(err){return console.error(err);}
-      else{console.log("successfully marked task as complete:" + task)}
+      else{
+        console.log("successfully marked task as complete:" + task);
+        this.getAll(req, res);
+      }
     });
   },
 
@@ -64,7 +67,10 @@ module.exports = {
     tasksToUpdate.forEach(function(task){
       Task.update({id: task.id}, {$set: {completed: true}},function(err, data){
         if(err){return console.error(err);}
-        else{console.log("successfully marked ALL tasks as complete" + task)}
+        else{
+          console.log("successfully marked ALL tasks as complete" + task);
+          this.getAll(req, res);
+        }
       });
     });
   }

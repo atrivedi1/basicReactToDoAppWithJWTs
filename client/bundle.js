@@ -167,12 +167,14 @@
 	    });
 	  },
 
-	  completeTask: function (id, description) {
+	  completeTask: function (id) {
 
 	    //mark task as complete
 	    var updatedTasks = this.state.taskList.slice();
+	    console.log(updatedTasks === this.state.taskList);
 	    var taskToBeUpdated = updatedTasks[id];
 	    taskToBeUpdated.completed = true;
+	    console.log('after clicking completed-->', this.state.taskList);
 
 	    //make a request to update task in database; if user is not authorized, will respond with an error
 	    $.ajax({
@@ -181,7 +183,7 @@
 	      data: taskToBeUpdated,
 	      headers: { 'authorization': this.state.authenticationCode },
 	      success: function (data) {
-	        this.setState({ taskList: updatedTasks });
+	        this.setState({ taskList: data });
 	        console.log('Task marked as completed in database');
 	      }.bind(this),
 	      error: function (status, err) {
@@ -205,7 +207,7 @@
 	      data: { tasks: allTasksMarkedAsComplete },
 	      headers: { 'authorization': this.state.authenticationCode },
 	      success: function (data) {
-	        this.setState({ taskList: allTasksMarkedAsComplete });
+	        this.setState({ taskList: data });
 	        console.log('ALL Tasks marked as completed in database');
 	      }.bind(this),
 	      error: function (status, err) {
@@ -225,6 +227,7 @@
 
 	  render: function () {
 
+	    console.log(this.state);
 	    var authenticated = this.state.authenticated;
 	    var tasksExist = this.state.taskList.length;
 
@@ -20591,7 +20594,7 @@
 	          id: "completeTask",
 	          value: this.props.task,
 	          onClick: function () {
-	            this.completedTaskEmitter(this.props.task.id, this.props.task.description);
+	            this.completedTaskEmitter(this.props.task.id);
 	          }.bind(this)
 	        },
 	        "Completed"
