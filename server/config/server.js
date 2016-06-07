@@ -3,8 +3,6 @@ var express = require('express');
 var mongoose = require('mongoose');
 var path = require('path');
 var bodyParser = require('body-parser');
-var expressJWT = require('express-jwt');
-var jwt = require('jsonwebtoken');
 
 //connect to db
 mongoose.connect('mongodb://localhost/todoApp');

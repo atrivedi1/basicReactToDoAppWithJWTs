@@ -15,9 +15,7 @@ var getAllTasks = function(res){
 module.exports = {
 
   //C(reate)
-  add: function(req, res){
-    console.log("trying to ADD ONE task:", req.body)
-   
+  add: function(req, res){   
     var newTask = new Task({
       id: req.body.id,
       completed: req.body.completed,
@@ -41,9 +39,7 @@ module.exports = {
    
     //U(pdate)
   updateAll: function(req, res){
-    console.log("trying to UDPATE all tasks -->", req.body.tasks);
     var tasksToUpdate = req.body.tasks;
-    
     tasksToUpdate.forEach(function(task){
       Task.update({id: task.id}, {$set: {description: task.description}},function(err, data){
         if(err){return console.error(err);}
@@ -57,8 +53,6 @@ module.exports = {
   delete: function(req, res){
 
     var task = req.body;
-
-    console.log("trying to DELETE ONE task: ", task);
     Task.update({id: task.id}, {$set: {completed: true}},function(err, data){
       if(err){return console.error(err);}
       else{
@@ -69,7 +63,6 @@ module.exports = {
   },
 
   deleteAll: function(req,res){
-    console.log("trying to DELETE ALL tasks:", req.body.tasks);
     var tasksToUpdate = req.body.tasks;
     tasksToUpdate.forEach(function(task){
       Task.update({id: task.id}, {$set: {completed: true}},function(err, data){

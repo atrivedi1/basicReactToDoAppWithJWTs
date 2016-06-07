@@ -22,7 +22,6 @@ var Todo = React.createClass({
 
   componentWillMount: function(){
     //get all tasks from db
-    console.log("trying to get tasks from db");
     $.ajax({
       url: this.state.homeUrl,
       dataType: 'json',
@@ -30,6 +29,7 @@ var Todo = React.createClass({
       cache: false,
       success: function(data){
         this.setState({taskList:data});
+        console.log("successfully retrieved data from database");
       }.bind(this),
       error: function(status, err){
         console.error(this.state.homeUrl, status, JSON.stringify(err));
@@ -108,10 +108,12 @@ var Todo = React.createClass({
   },
 
   updateTask: function(id, newDescription){
-    var updatedTasks = this.state.taskList.slice();
-    var taskToBeUpdated = updatedTasks[id];
-    taskToBeUpdated.description = newDescription;     
-    this.setState({taskList: updatedTasks});
+    var updatedTaskList = this.state.taskList.slice();
+    var taskToBeUpdated = updatedTaskList[id];
+    var copyOfTargetTask = this.cloneObject(taskToBeUpdated);
+    copyOfTargetTask.description = newDescription
+    updatedTaskList[id] = copyOfTargetTask;     
+    this.setState({taskList: updatedTaskList});
   },
 
   updateTasks: function(){
@@ -132,11 +134,9 @@ var Todo = React.createClass({
   completeTask: function(id){
       
       //mark task as complete
-      console.log('state after clicking complete ONE -->', this.state.taskList);
       var taskToBeUpdated = this.state.taskList[id];
       var copyOfTargetTask = this.cloneObject(taskToBeUpdated);
-      copyOfTargetTask.completed = true;   
-
+  
       //make a request to update task in database; if user is not authorized, will respond with an error
       $.ajax({
         url: this.state.singleTaskUrl,
@@ -156,11 +156,9 @@ var Todo = React.createClass({
 
   completeAllTasks: function(){
 
-    //create a copy of taskList and mark all tasks as completed
-    console.log('state after clicking complete ALL -->', this.state.taskList);
-    var completedCopyOfTaskList = this.state.taskList.map(function(task){
+    //create a copy of taskList
+    var copyOfTaskList = this.state.taskList.map(function(task){
       var taskClone = this.cloneObject(task);
-      taskClone.completed = false;
       return taskClone;
     }.bind(this));
 
@@ -169,7 +167,7 @@ var Todo = React.createClass({
     $.ajax({
         url: this.state.allTasksUrl,
         type: 'DELETE',
-        data: {tasks: completedCopyOfTaskList},
+        data: {tasks: copyOfTaskList},
         headers: {'authorization': this.state.authenticationCode},
         success: function(data) {
           this.setState({taskList: data});
