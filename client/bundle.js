@@ -85,6 +85,7 @@
 	    });
 	  },
 
+	  //helper function that enables us to make copies of props on state without mutating state
 	  cloneObject: function (obj) {
 	    var result = {};
 	    for (var key in obj) {
@@ -93,6 +94,7 @@
 	    return result;
 	  },
 
+	  //adjusts state/retrived auth token based on whether or not user has check the authorized checkbox
 	  authenticationSwitch: function () {
 
 	    var isNowAuthenticated = !this.state.authenticated;
@@ -118,11 +120,15 @@
 	    }
 	  },
 
+	  //flashes when authorize checkbox has not been selected
 	  authenticationWarning: function () {
 	    return 'Click the checkbox to authenticate; you will not be able to delete tasks otherwise';
 	  },
 
+	  //adds new task to the db
 	  addTask: function (e) {
+
+	    //prepare new task object
 	    var taskDescription = this.refs.taskInput.value;
 	    var taskObj = {
 	      completed: false,
@@ -130,7 +136,7 @@
 	      description: taskDescription
 	    };
 
-	    //add to database
+	    //add task object database
 	    if (taskDescription) {
 	      $.ajax({
 	        url: this.state.singleTaskUrl,
@@ -152,6 +158,7 @@
 	    }
 	  },
 
+	  //update task description
 	  updateTask: function (id, newDescription) {
 	    var updatedTaskList = this.state.taskList.slice();
 	    var taskToBeUpdated = updatedTaskList[id];
@@ -161,6 +168,7 @@
 	    this.setState({ taskList: updatedTaskList });
 	  },
 
+	  //reflect updated tasks in database
 	  updateTasks: function () {
 	    //update tasks
 	    $.ajax({
@@ -176,17 +184,13 @@
 	    });
 	  },
 
+	  //mark one task as complete
 	  completeTask: function (id) {
-
-	    //mark task as complete
-	    var taskToBeUpdated = this.state.taskList[id];
-	    var copyOfTargetTask = this.cloneObject(taskToBeUpdated);
-
 	    //make a request to update task in database; if user is not authorized, will respond with an error
 	    $.ajax({
 	      url: this.state.singleTaskUrl,
 	      type: 'DELETE',
-	      data: copyOfTargetTask,
+	      data: this.state.taskList[id],
 	      headers: { 'authorization': this.state.authenticationCode },
 	      success: function (data) {
 	        this.setState({ taskList: data });
@@ -198,19 +202,13 @@
 	    });
 	  },
 
+	  //mark ALL tasks as complete
 	  completeAllTasks: function () {
-
-	    //create a copy of taskList
-	    var copyOfTaskList = this.state.taskList.map(function (task) {
-	      var taskClone = this.cloneObject(task);
-	      return taskClone;
-	    }.bind(this));
-
 	    //make a request to mark all tasks as completed in database; if user is not authenticated will return error;
 	    $.ajax({
 	      url: this.state.allTasksUrl,
 	      type: 'DELETE',
-	      data: { tasks: copyOfTaskList },
+	      data: { tasks: this.state.taskList },
 	      headers: { 'authorization': this.state.authenticationCode },
 	      success: function (data) {
 	        this.setState({ taskList: data });
@@ -222,6 +220,7 @@
 	    });
 	  },
 
+	  //renders only the unfinished tasks
 	  renderAllUnfinishedTasks: function () {
 	    //filters out completed tasks and then maps to an array of jsx elements;
 	    return this.state.taskList.filter(function (task) {
