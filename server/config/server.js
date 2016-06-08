@@ -5,7 +5,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 
 //connect to db
-mongoose.connect('mongodb://ds037095.mlab.com:37095/reacttodoapp');
+mongoose.connect('mongodb://kash1215:Bboo8276@ds037095.mlab.com:37095/reacttodoapp');
 
 
 //create instance of express server
