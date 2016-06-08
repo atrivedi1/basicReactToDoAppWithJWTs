@@ -26,5 +26,5 @@ var port = process.env.PORT || 3000;
 
 //point server to port 3000 and confirm that it's listening
 app.listen(port, function(){
-	console.log('listening on port ' + port);
+	console.log('listening on port: ' + port, 'MLAB_PASS: ' + process.env.MLAB_PASS, 'PORT: ', process.env.PORT);
 });
