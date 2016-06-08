@@ -59,10 +59,10 @@
 	    return {
 	      authenticated: false,
 	      authenticationCode: null,
-	      authenticationURL: "https://damp-forest-39317.herokuapp.com//authentication",
-	      homeUrl: "https://damp-forest-39317.herokuapp.com//todoHome",
-	      singleTaskUrl: "https://damp-forest-39317.herokuapp.com//api/task",
-	      allTasksUrl: "https://damp-forest-39317.herokuapp.com//api/allTasks",
+	      authenticationURL: "https://damp-forest-39317.herokuapp.com/authentication",
+	      homeUrl: "https://damp-forest-39317.herokuapp.com/todoHome",
+	      singleTaskUrl: "https://damp-forest-39317.herokuapp.com/api/task",
+	      allTasksUrl: "https://damp-forest-39317.herokuapp.com/api/allTasks",
 	      newTask: "",
 	      taskList: []
 	    };
