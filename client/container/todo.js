@@ -11,10 +11,10 @@ var Todo = React.createClass({
     return {
       authenticated: false,
       authenticationCode: null,
-      authenticationURL: "http://localhost:3000/authentication",
-      homeUrl: "http://localhost:3000/todoHome",
-      singleTaskUrl: "http://localhost:3000/api/task",
-      allTasksUrl: "http://localhost:3000/api/allTasks",
+      authenticationURL: "https://damp-forest-39317.herokuapp.com//authentication",
+      homeUrl: "https://damp-forest-39317.herokuapp.com//todoHome",
+      singleTaskUrl: "https://damp-forest-39317.herokuapp.com//api/task",
+      allTasksUrl: "https://damp-forest-39317.herokuapp.com//api/allTasks",
       newTask: "",
       taskList: []
     };
